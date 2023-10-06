@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 var ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddScoped<IDbConnection>((sp)=>new SQLiteConnection(ConnectionString));
 builder.Services.AddScoped<ITareaRepository, TareaRepository>();
+builder.Services.AddSingleton<AccesoADatos>(p => new AccesoADatos("tareas.json"));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

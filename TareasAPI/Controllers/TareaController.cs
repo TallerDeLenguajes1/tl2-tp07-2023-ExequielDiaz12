@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TareasAPI.interfaces;
 using TareasAPI.models;
+using TareasAPI.repositories;
 
 namespace TareasAPI.Controllers
 {
@@ -15,10 +17,31 @@ namespace TareasAPI.Controllers
     {
         private readonly ILogger<TareaController> _logger;
         private readonly ITareaRepository _tareaRepository;
-        public TareaController(ILogger<TareaController> logger, ITareaRepository tareaRepository)
+        private readonly AccesoADatos _accesoADatos;
+        public TareaController(ILogger<TareaController> logger, ITareaRepository tareaRepository, AccesoADatos accesoADatos)
         {
             _logger = logger;
             _tareaRepository = tareaRepository;
+            _accesoADatos = accesoADatos;
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<Tarea>> ObtenerTodasLasTareasJson()
+        {
+            var tareas = _accesoADatos.ObtenerTodasLasTareasJson();
+            return Ok(tareas);
+        }
+
+        [HttpPost]
+        public ActionResult<int> CrearTareas([FromBody] Tarea tarea)
+        {
+            
+            var tareas = _accesoADatos.ObtenerTodasLasTareasJson();
+            tarea.Id = tareas.Max(t=>t.Id) + 1;
+            tareas.Add(tarea);
+
+            _accesoADatos.GuardarTareasJson(tareas);
+            return Ok(tarea);
         }
 
         [HttpGet]
