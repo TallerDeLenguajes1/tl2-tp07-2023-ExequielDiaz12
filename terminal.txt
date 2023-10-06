@@ -1,0 +1,11 @@
+/***creacion de webapi****/
+dotnet new webapi -n TareasAPI
+
+/***    para la base de datos   ****/
+
+dotnet add package Microsoft.Data.Sqlite --version 8.0.0-rc.1.23419.6
+dotnet add package System.Data.SQLite --version 1.0.118
+
+
+/*****  Para persistit los datos en json    *******/
+dotnet add package Newtonsoft.Json --version 13.0.3
